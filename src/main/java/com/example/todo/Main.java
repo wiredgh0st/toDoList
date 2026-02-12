@@ -25,14 +25,21 @@ public class Main
                 System.out.println("Введите название файла: ");
                 String nameFile = scanner.nextLine();
 
-                Task task1 = new Task(nameFile);
-                task1.addTask();
-
+                Task taskToAdd = new Task(nameFile);
+                taskToAdd.addTask();
                 break;
+
             case 2:
                 break;
+
             case 3:
+                System.out.println("Введите название файла который хотите удалить: ");
+                String nameFileToDelete = scanner.nextLine();
+
+                Task taskToDelete = new Task(nameFileToDelete);
+                taskToDelete.deleteTask();
                 break;
+
             case 4:
                 break;
             case 5:
