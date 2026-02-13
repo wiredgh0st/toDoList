@@ -1,6 +1,7 @@
 package main.java.com.example.todo.service;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,21 +12,7 @@ import java.util.Scanner;
 
 public class TaskService
 {
-    private String nameFile;
-
-    public TaskService(String nameFile)
-    {
-        setNameFile(nameFile);
-    }
-
-    public void setNameFile(String nameFile) {
-        if(nameFile == null || nameFile.isEmpty())
-            this.nameFile = "Task";
-        else
-            this.nameFile = nameFile;
-    }
-
-    public void addTask()
+    public static void addTask(String nameFile)
     {
 
         try(BufferedWriter buff = new BufferedWriter(new FileWriter("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"))){
@@ -52,7 +39,7 @@ public class TaskService
         }
     }
 
-    public void deleteTask()
+    public static void deleteTask(String nameFile)
     {
         try(Scanner scanner = new Scanner(System.in)){
 
