@@ -1,6 +1,7 @@
 package main.java.com.example.todo;
 
-import main.java.com.example.todo.model.Task;
+import main.java.com.example.todo.service.TaskService;
+
 import java.util.Scanner;
 
 public class Main
@@ -25,7 +26,7 @@ public class Main
                 System.out.println("Введите название файла: ");
                 String nameFile = scanner.nextLine();
 
-                Task taskToAdd = new Task(nameFile);
+                TaskService taskToAdd = new TaskService(nameFile);
                 taskToAdd.addTask();
                 break;
 
@@ -36,7 +37,7 @@ public class Main
                 System.out.println("Введите название файла который хотите удалить: ");
                 String nameFileToDelete = scanner.nextLine();
 
-                Task taskToDelete = new Task(nameFileToDelete);
+                TaskService taskToDelete = new TaskService(nameFileToDelete);
                 taskToDelete.deleteTask();
                 break;
 
