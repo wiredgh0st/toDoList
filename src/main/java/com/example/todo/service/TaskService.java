@@ -63,11 +63,11 @@ public class TaskService
             lines.removeIf(line -> line.startsWith(idToDelete + ":"));
 
             List<String> updated = new ArrayList<>();
-            int newId = idToDelete - 1;
+            int newId = 1;
 
             for(String line: lines)
             {
-                String[] parts = line.split(":");
+                String[] parts = line.split(": ");
                 parts[0] = String.valueOf(newId);
 
                 updated.add(String.join(": ", parts));
