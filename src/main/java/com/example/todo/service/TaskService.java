@@ -1,9 +1,6 @@
 package main.java.com.example.todo.service;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -67,8 +64,44 @@ public class TaskService
         }
     }
 
-    public void changeTask()
+    public static void changeTask(String nameFile)
     {
+        try {
+            Scanner scanner = new Scanner(System.in);
+            List<String> lines = Files.readAllLines(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"));
 
+            System.out.println("Вот ваш файл:\n");
+            for(String line: lines)
+                System.out.println(line);
+
+                System.out.println("Какую вы хотите изменить строку? (Enter - выход)");
+                String input = scanner.nextLine();
+
+                if(!input.isBlank())
+                {
+                    int idToEdit = Integer.parseInt(input);
+
+                    for(int i = 0; i < lines.size(); i++)
+                    {
+                        String[] parts = lines.get(i).split(": ", 3);
+                        int currectId = Integer.parseInt(parts[0]);
+
+                        if(currectId == idToEdit)
+                        {
+                            System.out.println("Введите новый текст строки:");
+                            String newText = scanner.nextLine();
+
+                            parts[1] = newText;
+
+                            lines.set(i, String.join(": ", parts));
+                            break;
+                        }
+                }
+                    Files.write(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"), lines);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

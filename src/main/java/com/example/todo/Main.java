@@ -1,6 +1,5 @@
 package main.java.com.example.todo;
 
-import main.java.com.example.todo.model.Task;
 import main.java.com.example.todo.service.TaskService;
 
 import java.util.Scanner;
@@ -47,6 +46,13 @@ public class Main
                 break;
 
             case 4:
+                System.out.println("Введите название файла который вы хотите изменить: ");
+                String nameFileToChange = scanner.nextLine();
+
+                if(nameFileToChange == null || nameFileToChange.isEmpty())
+                    System.out.println("Вы ничего не ввели.");
+                else
+                    TaskService.changeTask(nameFileToChange);
                 break;
             case 5:
                 break;
