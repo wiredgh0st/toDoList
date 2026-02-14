@@ -33,6 +33,8 @@ public class Main
                 break;
 
             case 2:
+                System.out.println("Вот все ваши файлы:\n");
+                TaskService.showAll();
                 break;
 
             case 3:

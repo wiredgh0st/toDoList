@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class TaskService
 {
@@ -35,6 +36,35 @@ public class TaskService
             return;
         }
     }
+
+    public static void showAll() {
+
+        Path folderPath = Path.of("D:\\ToDoList_wiredgh0st\\data\\");
+
+        try (Stream<Path> paths = Files.list(folderPath)) {
+
+            paths
+                    .filter(Files::isRegularFile)
+                    .forEach(path -> {
+
+                        System.out.println("Файл: " + path.getFileName());
+
+                        try {
+                            List<String> lines = Files.readAllLines(path);
+                            lines.forEach(System.out::println);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        System.out.println("------------------");
+                    });
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 
     public static void deleteTask(String nameFile)
     {
