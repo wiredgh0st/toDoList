@@ -10,36 +10,27 @@ import java.util.stream.Stream;
 
 public class TaskService
 {
-    public static void addTask(String nameFile)
+
+    public void addTask(String nameFile, List<String> tasks)
     {
+        try(BufferedWriter buff = new BufferedWriter(new FileWriter("data/" + nameFile + ".txt", true))){
 
-        try(BufferedWriter buff = new BufferedWriter(new FileWriter("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"))){
-            Scanner scanner = new Scanner(System.in);
-
-            String task = null;
-            int idTask = 1;
-
-            System.out.println("Введите \"stop\" если хотите закончить ввод.");
-            while(true)
+            int startID = 1;
+            for(String line: tasks)
             {
-                task = scanner.nextLine();
-
-                if(task.equals("stop"))
-                    break;
-
-                buff.write(idTask + ": " + task + "\n");
-                idTask++;
+                buff.write(startID + ": " + line + "\n");
+                startID++;
             }
-            scanner.close();
+
         } catch (IOException e) {
             System.out.println("Ошибка! Не удалось создать файл.");
             return;
         }
     }
 
-    public static void showAll() {
+    public void showAll() {
 
-        Path folderPath = Path.of("D:\\ToDoList_wiredgh0st\\data\\");
+        Path folderPath = Path.of("data");
 
         try (Stream<Path> paths = Files.list(folderPath)) {
 
@@ -66,46 +57,34 @@ public class TaskService
 
 
 
-    public static void deleteTask(String nameFile)
+    public void deleteTask(String nameFile, int idToDelete)
     {
-        try(Scanner scanner = new Scanner(System.in)){
-
-            List<String> lines = Files.readAllLines(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"));
-
-            System.out.println("Введите строку которую хотите удалить: ");
-            int idToDelete = scanner.nextInt();
-            lines.removeIf(line -> line.startsWith(idToDelete + ":"));
+        try {
+            List<String> lines = Files.readAllLines(getPath(nameFile));
+            lines.removeIf(line -> line.startsWith(idToDelete + ": "));
 
             List<String> updated = new ArrayList<>();
             int newId = 1;
 
             for(String line: lines)
             {
-                String[] parts = line.split(": ");
+                String[] parts = line.split(": ", 2);
                 parts[0] = String.valueOf(newId);
 
                 updated.add(String.join(": ", parts));
                 newId++;
             }
-            Files.write(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"), updated);
+            Files.write(getPath(nameFile), updated);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void changeTask(String nameFile)
+    public void changeTask(String nameFile, String input, String newText)
     {
         try {
-            Scanner scanner = new Scanner(System.in);
-            List<String> lines = Files.readAllLines(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"));
-
-            System.out.println("Вот ваш файл:\n");
-            for(String line: lines)
-                System.out.println(line);
-
-                System.out.println("Какую вы хотите изменить строку? (Enter - выход)");
-                String input = scanner.nextLine();
+            List<String> lines = Files.readAllLines(getPath(nameFile));
 
                 if(!input.isBlank())
                 {
@@ -113,21 +92,18 @@ public class TaskService
 
                     for(int i = 0; i < lines.size(); i++)
                     {
-                        String[] parts = lines.get(i).split(": ", 3);
+                        String[] parts = lines.get(i).split(": ", 2);
                         int currectId = Integer.parseInt(parts[0]);
 
                         if(currectId == idToEdit)
                         {
-                            System.out.println("Введите новый текст строки:");
-                            String newText = scanner.nextLine();
-
                             parts[1] = newText;
 
                             lines.set(i, String.join(": ", parts));
                             break;
                         }
                 }
-                    Files.write(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"), lines);
+                    Files.write(getPath(nameFile), lines);
             }
 
         } catch (IOException e) {
@@ -135,21 +111,16 @@ public class TaskService
         }
     }
 
-    public static void showOneTask(String nameFile)
+    public void showOneTask(String nameFile, String textID)
     {
-        try(Scanner scanner = new Scanner(System.in)) {
-            List<String> lines = Files.readAllLines(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"));
-
-            System.out.println("Введите ID которое хотите увидеть: ");
-            String textID = scanner.nextLine();
-            if(textID.isBlank()) return;
-
+        try {
+            List<String> lines = Files.readAllLines(getPath(nameFile));
             int ID = Integer.parseInt(textID);
             boolean found = false;
 
             for(String line: lines)
             {
-                String[] parts = line.split(": ", 3);
+                String[] parts = line.split(": ", 2);
                 int currectId = Integer.parseInt(parts[0]);
 
                 if(currectId == ID)
@@ -167,5 +138,24 @@ public class TaskService
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void showFile(String nameFile)
+    {
+        try {
+
+            List<String> lines = Files.readAllLines(getPath(nameFile));
+            System.out.println("Вот ваш файл:\n");
+            for(String line: lines)
+                System.out.println(line);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Path getPath(String nameFile)
+    {
+        return Path.of("data/" + nameFile + ".txt");
     }
 }

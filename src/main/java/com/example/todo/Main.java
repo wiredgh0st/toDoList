@@ -2,12 +2,15 @@ package main.java.com.example.todo;
 
 import main.java.com.example.todo.service.TaskService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main
 {
     public static void main(String[] args)
     {
+        TaskService service = new TaskService();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Здраствуйте, это мой первый проект toDoList. Выберите действие:\n\n" +
                 "1. Добавить задачу.\n" +
@@ -17,34 +20,51 @@ public class Main
                 "5. Показать одну задачу по ID.\n" +
                 "\nВведите номер команды: ");
 
-        int ChoiseMenu = scanner.nextInt();
+        int choiseMenu = scanner.nextInt();
         scanner.nextLine();
 
-        switch(ChoiseMenu)
+        switch(choiseMenu)
         {
             case 1:
                 System.out.println("Введите название файла: ");
                 String nameFile = scanner.nextLine();
-
                 if(nameFile.isBlank())
+                {
                     System.out.println("Вы ничего не ввели.");
-                else
-                    TaskService.addTask(nameFile);
+                    return;
+                }
+                List<String> tasks = new ArrayList<>();
+                System.out.println("Введите ваши задачи:");
+                while(true)
+                {
+                    String line = scanner.nextLine();
+                    if(line.equals("stop")) break;
+
+                    tasks.add(line);
+                }
+                service.addTask(nameFile, tasks);
                 break;
 
             case 2:
                 System.out.println("Вот все ваши файлы:\n");
-                TaskService.showAll();
+                service.showAll();
                 break;
 
             case 3:
                 System.out.println("Введите название файла который хотите удалить: ");
-                String nameFileToDelete = scanner.nextLine();
 
+                String nameFileToDelete = scanner.nextLine();
                 if(nameFileToDelete.isBlank())
+                {
                     System.out.println("Вы ничего не ввели.");
-                else
-                    TaskService.deleteTask(nameFileToDelete);
+                    return;
+                }
+
+                service.showFile(nameFileToDelete);
+                System.out.println("Введите строку которую хотите удалить: ");
+                int idToDelete = scanner.nextInt();
+
+                service.deleteTask(nameFileToDelete, idToDelete);
                 break;
 
             case 4:
@@ -52,9 +72,19 @@ public class Main
                 String nameFileToChange = scanner.nextLine();
 
                 if(nameFileToChange.isBlank())
+                {
                     System.out.println("Вы ничего не ввели.");
-                else
-                    TaskService.changeTask(nameFileToChange);
+                    return;
+                }
+                service.showFile(nameFileToChange);
+
+                System.out.println("Какую вы хотите изменить строку? (Enter - выход)");
+                String input = scanner.nextLine();
+
+                System.out.println("Введите новый текст строки:");
+                String newText = scanner.nextLine();
+
+                service.changeTask(nameFileToChange, input, newText);
                 break;
 
             case 5:
@@ -62,9 +92,17 @@ public class Main
                 String nameFileToCheck = scanner.nextLine();
 
                 if(nameFileToCheck.isBlank())
+                {
                     System.out.println("Вы ничего не ввели.");
-                else
-                    TaskService.showOneTask(nameFileToCheck);
+                    return;
+                }
+
+                System.out.println("Введите ID которое хотите увидеть: ");
+                String textID = scanner.nextLine();
+                if(textID.isBlank()) return;
+
+                service.showOneTask(nameFileToCheck, textID);
+
                 break;
 
             default:
