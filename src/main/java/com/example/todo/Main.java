@@ -26,7 +26,7 @@ public class Main
                 System.out.println("Введите название файла: ");
                 String nameFile = scanner.nextLine();
 
-                if(nameFile == null || nameFile.isEmpty())
+                if(nameFile.isBlank())
                     System.out.println("Вы ничего не ввели.");
                 else
                     TaskService.addTask(nameFile);
@@ -41,7 +41,7 @@ public class Main
                 System.out.println("Введите название файла который хотите удалить: ");
                 String nameFileToDelete = scanner.nextLine();
 
-                if(nameFileToDelete == null || nameFileToDelete.isEmpty())
+                if(nameFileToDelete.isBlank())
                     System.out.println("Вы ничего не ввели.");
                 else
                     TaskService.deleteTask(nameFileToDelete);
@@ -51,12 +51,20 @@ public class Main
                 System.out.println("Введите название файла который вы хотите изменить: ");
                 String nameFileToChange = scanner.nextLine();
 
-                if(nameFileToChange == null || nameFileToChange.isEmpty())
+                if(nameFileToChange.isBlank())
                     System.out.println("Вы ничего не ввели.");
                 else
                     TaskService.changeTask(nameFileToChange);
                 break;
+
             case 5:
+                System.out.println("Введите название файла который вы хотите посмотреть: ");
+                String nameFileToCheck = scanner.nextLine();
+
+                if(nameFileToCheck.isBlank())
+                    System.out.println("Вы ничего не ввели.");
+                else
+                    TaskService.showOneTask(nameFileToCheck);
                 break;
 
             default:

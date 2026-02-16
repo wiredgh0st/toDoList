@@ -134,4 +134,38 @@ public class TaskService
             throw new RuntimeException(e);
         }
     }
+
+    public static void showOneTask(String nameFile)
+    {
+        try(Scanner scanner = new Scanner(System.in)) {
+            List<String> lines = Files.readAllLines(Path.of("D:\\ToDoList_wiredgh0st\\data\\" + nameFile + ".txt"));
+
+            System.out.println("Введите ID которое хотите увидеть: ");
+            String textID = scanner.nextLine();
+            if(textID.isBlank()) return;
+
+            int ID = Integer.parseInt(textID);
+            boolean found = false;
+
+            for(String line: lines)
+            {
+                String[] parts = line.split(": ", 3);
+                int currectId = Integer.parseInt(parts[0]);
+
+                if(currectId == ID)
+                {
+                    System.out.println("Найдена задача:");
+                    System.out.println(line);
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+                System.out.println("Задача не найдена.");
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
