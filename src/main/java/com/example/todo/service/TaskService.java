@@ -1,5 +1,7 @@
 package main.java.com.example.todo.service;
 
+import main.java.com.example.todo.model.Status;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +20,7 @@ public class TaskService
             int startID = 1;
             for(String line: tasks)
             {
-                buff.write(startID + ": " + line + "\n");
+                buff.write(startID + ": " + line + ": "+ Status.NEW + "\n");
                 startID++;
             }
 
@@ -68,7 +70,7 @@ public class TaskService
 
             for(String line: lines)
             {
-                String[] parts = line.split(": ", 2);
+                String[] parts = line.split(": ", 3);
                 parts[0] = String.valueOf(newId);
 
                 updated.add(String.join(": ", parts));
@@ -92,7 +94,7 @@ public class TaskService
 
                     for(int i = 0; i < lines.size(); i++)
                     {
-                        String[] parts = lines.get(i).split(": ", 2);
+                        String[] parts = lines.get(i).split(": ", 3);
                         int currectId = Integer.parseInt(parts[0]);
 
                         if(currectId == idToEdit)
@@ -102,7 +104,7 @@ public class TaskService
                             lines.set(i, String.join(": ", parts));
                             break;
                         }
-                }
+                    }
                     Files.write(getPath(nameFile), lines);
             }
 
@@ -120,7 +122,7 @@ public class TaskService
 
             for(String line: lines)
             {
-                String[] parts = line.split(": ", 2);
+                String[] parts = line.split(": ", 3);
                 int currectId = Integer.parseInt(parts[0]);
 
                 if(currectId == ID)
@@ -135,6 +137,32 @@ public class TaskService
             if(!found)
                 System.out.println("Задача не найдена.");
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void changeStatus(String nameFile, String statusID, int choiseStatus)
+    {
+        try {
+            List<String> lines = Files.readAllLines(getPath(nameFile));
+            int ID = Integer.parseInt(statusID);
+            for(int i = 0; i < lines.size(); i++)
+            {
+                String line = lines.get(i);
+                String[] parts = line.split(": ", 3);
+                int currectID = Integer.parseInt(parts[0]);
+
+                if(currectID == ID)
+                {
+                    Status newStatus = Status.fromNumber(choiseStatus);
+                    parts[2] = newStatus.name();
+
+                    lines.set(i, String.join(": ", parts));
+                }
+            }
+
+            Files.write(getPath(nameFile), lines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

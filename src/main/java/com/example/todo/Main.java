@@ -18,6 +18,7 @@ public class Main
                 "3. Удалить задачу.\n" +
                 "4. Изменить задачу.\n" +
                 "5. Показать одну задачу по ID.\n" +
+                "6. Изменить статус задачи." +
                 "\nВведите номер команды: ");
 
         int choiseMenu = scanner.nextInt();
@@ -34,12 +35,12 @@ public class Main
                     return;
                 }
                 List<String> tasks = new ArrayList<>();
-                System.out.println("Введите ваши задачи:");
+                System.out.println("Введите ваши задачи(stop - конец ввода.):");
                 while(true)
                 {
                     String line = scanner.nextLine();
                     if(line.equals("stop")) break;
-
+                    if(line.isBlank()) continue;
                     tasks.add(line);
                 }
                 service.addTask(nameFile, tasks);
@@ -61,7 +62,7 @@ public class Main
                 }
 
                 service.showFile(nameFileToDelete);
-                System.out.println("Введите строку которую хотите удалить: ");
+                System.out.println("Введите строку которую хотите удалить:");
                 int idToDelete = scanner.nextInt();
 
                 service.deleteTask(nameFileToDelete, idToDelete);
@@ -103,6 +104,28 @@ public class Main
 
                 service.showOneTask(nameFileToCheck, textID);
 
+                break;
+
+            case 6:
+                System.out.println("Введите название файла:");
+                String fileToChangeStatus = scanner.nextLine();
+                if(fileToChangeStatus.isBlank())
+                {
+                    System.out.println("Вы ничего не ввели");
+                    return;
+                }
+                service.showFile(fileToChangeStatus);
+
+                System.out.println("Введите ID:");
+                String statusID = scanner.nextLine();
+
+                System.out.println("На какой статус хотите изменить?\n" +
+                        "1. - NEW\n" +
+                        "2. - IN_PROGRESS\n" +
+                        "3. - DONE\n");
+                int choiseStatus = scanner.nextInt();
+
+                service.changeStatus(fileToChangeStatus, statusID, choiseStatus);
                 break;
 
             default:
