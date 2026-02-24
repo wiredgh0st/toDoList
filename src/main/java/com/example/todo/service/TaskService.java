@@ -1,13 +1,13 @@
 package main.java.com.example.todo.service;
 
 import main.java.com.example.todo.model.Status;
+import main.java.com.example.todo.util.FileManager;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class TaskService
@@ -62,7 +62,7 @@ public class TaskService
     public void deleteTask(String nameFile, int idToDelete)
     {
         try {
-            List<String> lines = Files.readAllLines(getPath(nameFile));
+            List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
             lines.removeIf(line -> line.startsWith(idToDelete + ": "));
 
             List<String> updated = new ArrayList<>();
@@ -76,7 +76,7 @@ public class TaskService
                 updated.add(String.join(": ", parts));
                 newId++;
             }
-            Files.write(getPath(nameFile), updated);
+            Files.write(FileManager.getPath(nameFile), updated);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,7 +86,7 @@ public class TaskService
     public void changeTask(String nameFile, String input, String newText)
     {
         try {
-            List<String> lines = Files.readAllLines(getPath(nameFile));
+            List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
 
                 if(!input.isBlank())
                 {
@@ -105,7 +105,7 @@ public class TaskService
                             break;
                         }
                     }
-                    Files.write(getPath(nameFile), lines);
+                    Files.write(FileManager.getPath(nameFile), lines);
             }
 
         } catch (IOException e) {
@@ -116,7 +116,7 @@ public class TaskService
     public void showOneTask(String nameFile, String textID)
     {
         try {
-            List<String> lines = Files.readAllLines(getPath(nameFile));
+            List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
             int ID = Integer.parseInt(textID);
             boolean found = false;
 
@@ -145,7 +145,7 @@ public class TaskService
     public void changeStatus(String nameFile, String statusID, int choiseStatus)
     {
         try {
-            List<String> lines = Files.readAllLines(getPath(nameFile));
+            List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
             int ID = Integer.parseInt(statusID);
             for(int i = 0; i < lines.size(); i++)
             {
@@ -162,7 +162,7 @@ public class TaskService
                 }
             }
 
-            Files.write(getPath(nameFile), lines);
+            Files.write(FileManager.getPath(nameFile), lines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -172,7 +172,7 @@ public class TaskService
     {
         try {
 
-            List<String> lines = Files.readAllLines(getPath(nameFile));
+            List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
             System.out.println("Вот ваш файл:\n");
             for(String line: lines)
                 System.out.println(line);
@@ -180,10 +180,5 @@ public class TaskService
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Path getPath(String nameFile)
-    {
-        return Path.of("data/" + nameFile + ".txt");
     }
 }
