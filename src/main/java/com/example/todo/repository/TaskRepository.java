@@ -27,8 +27,25 @@ public class TaskRepository
                 Task task = new Task(ID, parts[1], status);
                 tasks.add(task);
             }
-
             return tasks;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveAll(String nameFile, List<Task> tasks)
+    {
+        try {
+            List<String> lines = new ArrayList<>();
+
+            for(Task task: tasks)
+            {
+                String line = task.toString();
+                lines.add(line);
+            }
+
+            Files.write(FileManager.getPath(nameFile), lines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
