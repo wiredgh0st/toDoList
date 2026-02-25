@@ -6,14 +6,20 @@ import main.java.com.example.todo.util.FileManager;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository
 {
-    List<Task> findAll(String nameFile)
+    public List<Task> findAll(String nameFile)
     {
         try {
+            Path path = FileManager.getPath(nameFile);
+
+            if(!Files.exists(path))
+                return new ArrayList<>();
+
             List<String> lines = Files.readAllLines(FileManager.getPath(nameFile));
             List<Task> tasks = new ArrayList<>();
             for(int i = 0; i < lines.size(); i++)

@@ -34,16 +34,16 @@ public class Main
                     System.out.println("Вы ничего не ввели.");
                     return;
                 }
-                List<String> tasks = new ArrayList<>();
+                List<String> lines = new ArrayList<>();
                 System.out.println("Введите ваши задачи(stop - конец ввода.):");
                 while(true)
                 {
                     String line = scanner.nextLine();
                     if(line.equals("stop")) break;
                     if(line.isBlank()) continue;
-                    tasks.add(line);
+                    lines.add(line);
                 }
-                service.addTask(nameFile, tasks);
+                service.addTask(nameFile, lines);
                 break;
 
             case 2:

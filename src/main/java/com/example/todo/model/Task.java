@@ -25,7 +25,7 @@ public class Task
     public void setStatus(Status status) { this.status = status; }
 
 
-    public String toString() {return id + ": " + title + ": " + status + "\n";}
+    public String toString() {return id + ": " + title + ": " + status;}
 
     public int getId() {
         return id;
