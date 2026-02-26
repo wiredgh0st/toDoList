@@ -10,19 +10,27 @@ public class Main
 {
     public static void main(String[] args)
     {
+        System.out.println("Здраствуйте, это мой первый проект toDoList.\n");
         TaskService service = new TaskService();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Здраствуйте, это мой первый проект toDoList. Выберите действие:\n\n" +
+        while(true){System.out.println(
                 "1. Добавить задачу.\n" +
                 "2. Показать все задачи.\n" +
                 "3. Удалить задачу.\n" +
                 "4. Изменить задачу.\n" +
                 "5. Показать одну задачу по ID.\n" +
-                "6. Изменить статус задачи." +
+                "6. Изменить статус задачи.\n" +
+                "0. Выход\n" +
                 "\nВведите номер команды: ");
 
         int choiseMenu = scanner.nextInt();
         scanner.nextLine();
+
+        if(choiseMenu == 0)
+        {
+            System.out.println("Выход...");
+            return;
+        }
 
         switch(choiseMenu)
         {
@@ -133,4 +141,5 @@ public class Main
                 return;
         }
     }
+}
 }
