@@ -30,11 +30,4 @@ public class Task
     public int getId() {
         return id;
     }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public String getTitle() {
-        return title;}
 }
